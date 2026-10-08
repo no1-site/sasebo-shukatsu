@@ -5,12 +5,12 @@
 (function () {
   "use strict";
 
-  // TODO: Set this site's GA4 measurement ID (example: G-XXXXXXXXXX).
-  // Leave empty until its dedicated data stream has been created.
-  const GA4_MEASUREMENT_ID = "";
+  // Shared GA4 measurement ID for this site.
+  // The homepage already loads the Google tag inline; do not configure it twice.
+  const GA4_MEASUREMENT_ID = "G-VN5SKDQH5H";
   const enabled = /^G-[A-Z0-9]+$/.test(GA4_MEASUREMENT_ID);
 
-  if (enabled) {
+  if (enabled && typeof window.gtag !== "function") {
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag("js", new Date());
