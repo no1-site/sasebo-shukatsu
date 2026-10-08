@@ -407,6 +407,10 @@ body{
   .mobile-line{display:block;}
 }
 
+
+.privacy a{color:var(--green);text-decoration:underline;text-underline-offset:3px;font-weight:900}
+.footer-privacy{margin-top:10px}
+.footer-privacy a{color:var(--green);text-decoration:underline;text-underline-offset:3px;font-weight:800}
 </style>
 </head>
 <body>
@@ -481,7 +485,7 @@ body{
 <div class="field"><label>連絡方法</label><select name="contact"><option>電話</option><option>メール</option><option>どちらでも可</option></select></div>
 <div class="field full"><label>補足（任意）</label><textarea name="message" placeholder="墓地名・お寺・時期・気になっていること など"></textarea></div>
 </div>
-<label class="privacy"><input required="" type="checkbox"/><span>個人情報の取扱いに同意して、無料相談へ進みます。</span></label>
+<label class="privacy"><input required="" type="checkbox"/><span><a href="privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>を確認し、個人情報の取扱いに同意して無料相談へ進みます。</span></label>
 <button class="btn-next" style="width:100%" type="submit">無料相談へ進む →</button>
 <div class="quiz-help">※ 送信内容は無料相談受付のために使用します。</div>
 </form>
@@ -658,6 +662,7 @@ body{
         ご相談内容に応じて、地域の専門事業者をご案内する場合があります。
       </div>
 </div>
+<div class="container footer-privacy"><a href="privacy.html">プライバシーポリシー</a></div>
 </footer>
 <div class="sticky-cta"><a href="#check">60秒で無料チェック →</a></div>
 <script>
