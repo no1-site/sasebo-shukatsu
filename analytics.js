@@ -28,7 +28,28 @@
     }
   }
 
+  // Read identifiers from GA4 without reading or transmitting personal details.
+  // gtag callbacks may arrive asynchronously; do not delay the inquiry form.
+  let gaClientId = "";
+  let gaSessionId = "";
+  function loadGaIdentifiers() {
+    if (!enabled || typeof window.gtag !== "function") return;
+    try {
+      window.gtag("get", GA4_MEASUREMENT_ID, "client_id", function (value) {
+        const id = String(value || "").trim();
+        if (/^\d+\.\d+$/.test(id)) gaClientId = id;
+      });
+      window.gtag("get", GA4_MEASUREMENT_ID, "session_id", function (value) {
+        const id = String(value || "").trim();
+        if (/^\d+$/.test(id)) gaSessionId = id;
+      });
+    } catch (error) {
+      // Analytics must never stop the inquiry form.
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    loadGaIdentifiers();
     // Measure interest in the 60-second questionnaire on all pages.
     document.querySelectorAll('a[href="#check"],a[href="./#check"]').forEach(function (link) {
       link.addEventListener("click", function () {
@@ -67,6 +88,20 @@
     let awaitingFrame = false;
     let responseCounted = false;
     leadForm.addEventListener("submit", function () {
+      // Homepage's earlier submit listener has already serialized questionnaire
+      // answers into the payloadField. Add GA4-only identifiers to that JSON.
+      const payloadField = document.getElementById("payloadField");
+      if (payloadField && payloadField.value) {
+        try {
+          const payload = JSON.parse(payloadField.value);
+          if (gaClientId) payload.ga_client_id = gaClientId;
+          if (gaSessionId) payload.ga_session_id = gaSessionId;
+          payloadField.value = JSON.stringify(payload);
+        } catch (error) {
+          // Leave the original payload unchanged if it isn't valid JSON.
+        }
+      }
+
       // Fired only after native form validation succeeds, before POST is sent.
       awaitingFrame = true;
       responseCounted = false;
