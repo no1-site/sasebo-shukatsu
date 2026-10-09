@@ -20,10 +20,16 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Check live pages, sitemap, and robots.txt
+      - name: Check live site and technical SEO
         id: check
         continue-on-error: true
-        run: python scripts/site_health.py > site-health-report.txt 2>&1
+        shell: bash
+        run: |
+          python scripts/site_health.py > site-health-report.txt 2>&1
+          live_status=$?
+          python scripts/seo_audit.py >> site-health-report.txt 2>&1
+          seo_status=$?
+          if [ "$live_status" -ne 0 ] || [ "$seo_status" -ne 0 ]; then exit 1; fi
 
       - name: Print health report
         if: always()
