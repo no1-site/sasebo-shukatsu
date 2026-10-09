@@ -1,0 +1,71 @@
+name: Sasebo site health monitor
+
+on:
+  schedule:
+    # Daily around 09:17 JST (GitHub's scheduled runs can be delayed).
+    - cron: "17 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check live pages, sitemap, and robots.txt
+        id: check
+        continue-on-error: true
+        run: python scripts/site_health.py > site-health-report.txt 2>&1
+
+      - name: Print health report
+        if: always()
+        run: cat site-health-report.txt
+
+      - name: Open a GitHub issue if the site fails a check
+        if: steps.check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const title = '【自動監視】墓じまいサイトの公開確認エラー';
+            const { owner, repo } = context.repo;
+            const issues = await github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', per_page: 100 });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            if (!existing) {
+              const report = fs.readFileSync('site-health-report.txt', 'utf8');
+              const runUrl = 'https://github.com/' + owner + '/' + repo + '/actions/runs/' + context.runId;
+              await github.rest.issues.create({
+                owner, repo, title,
+                body: 'サイトの定期確認で問題を検知しました。個人情報は含まれません。\n\n' +
+                  '実行結果: ' + runUrl + '\n\n' + report.slice(0, 10000)
+              });
+            }
+
+      - name: Close previous alert after recovery
+        if: steps.check.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '【自動監視】墓じまいサイトの公開確認エラー';
+            const { owner, repo } = context.repo;
+            const issues = await github.paginate(github.rest.issues.listForRepo, { owner, repo, state: 'open', per_page: 100 });
+            const existing = issues.find(issue => !issue.pull_request && issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: existing.number,
+                body: '公開ページ・サイトマップ・robots.txt の確認が成功しました。自動でクローズします。'
+              });
+              await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed' });
+            }
+
+      - name: Mark check failure
+        if: steps.check.outcome == 'failure'
+        run: exit 1
