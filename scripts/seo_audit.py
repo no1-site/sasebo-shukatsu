@@ -30,6 +30,7 @@ class PageParser(HTMLParser):
         self.canonical = ""
         self.robots = ""
         self.links = []
+        self.images = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -43,6 +44,8 @@ class PageParser(HTMLParser):
             self.canonical = attrs.get("href", "").strip()
         if tag == "a" and attrs.get("href"):
             self.links.append(attrs["href"])
+        if tag == "img" and attrs.get("src"):
+            self.images.append(attrs["src"])
 
     def handle_endtag(self, tag):
         if tag == "title":
@@ -117,6 +120,10 @@ def main():
             target = local_link_target(link, filename)
             if target is not None and not (ROOT / target).is_file():
                 problems.append(f"{filename}: broken internal link {link}")
+        for image_src in parser.images:
+            target = local_link_target(image_src, filename)
+            if target is not None and not (ROOT / target).is_file():
+                problems.append(f"{filename}: missing local image {image_src}")
         print(f"Checked page SEO: {filename}")
 
     try:
