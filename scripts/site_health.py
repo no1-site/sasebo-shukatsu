@@ -14,6 +14,7 @@ PAGES = (
     BASE,
     BASE + "sasebo-hakajimai-guide.html",
     BASE + "sasebo-kaiso-permit.html",
+    BASE + "sasebo-hakajimai-cost.html",
     BASE + "privacy.html",
 )
 SITEMAP = BASE + "sitemap.xml"
