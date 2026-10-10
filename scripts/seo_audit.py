@@ -16,6 +16,7 @@ FILES = (
     "sasebo-hakajimai-guide.html",
     "sasebo-kaiso-permit.html",
     "sasebo-hakajimai-cost.html",
+    "blog.html",
     "privacy.html",
 )
 
