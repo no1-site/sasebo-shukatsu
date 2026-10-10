@@ -3,3 +3,4 @@ https://no1-site.github.io/sasebo-shukatsu/sasebo-hakajimai-guide.html
 https://no1-site.github.io/sasebo-shukatsu/privacy.html
 https://no1-site.github.io/sasebo-shukatsu/sasebo-kaiso-permit.html
 https://no1-site.github.io/sasebo-shukatsu/sasebo-hakajimai-cost.html
+https://no1-site.github.io/sasebo-shukatsu/blog.html
