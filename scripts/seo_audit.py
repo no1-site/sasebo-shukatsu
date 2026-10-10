@@ -128,7 +128,14 @@ def main():
         }
         for url in sorted(expected_urls - actual_urls):
             problems.append(f"URL missing from sitemap: {url}")
-        print(f"Checked sitemap references: {len(actual_urls)} URLs")
+        text_sitemap_urls = {
+            line.strip()
+            for line in (ROOT / "sitemap.txt").read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        }
+        if text_sitemap_urls != actual_urls:
+            problems.append("sitemap.txt URLs differ from sitemap.xml; update both files together")
+        print(f"Checked XML/text sitemap references: {len(actual_urls)} URLs")
     except (OSError, ET.ParseError) as exc:
         problems.append(f"Cannot validate sitemap: {exc}")
 
