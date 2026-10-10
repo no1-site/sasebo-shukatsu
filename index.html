@@ -481,20 +481,20 @@ body{
 <div class="quiz-result" id="resultPane">
 <div class="quiz-tag">チェック完了</div>
 <h3>相談前に確認しておきたいポイントを整理しました</h3>
-<p>ご回答内容から、見積り前に確認しておきたいポイントをまとめました。希望される方はそのまま無料相談へ進めます。</p>
+<p>ご回答内容から、見積り前に確認しておきたいポイントをまとめました。60秒チェックは匿名で利用できます。無料相談をご希望の場合は、お名前と連絡先をご入力ください。</p>
 <div class="result-box"><ul id="resultList"></ul></div>
 <form action="https://script.google.com/macros/s/AKfycbxIMjBnkqvveqn0oUmY34nXpCWBjDm5eaX-6HEKdzjKQ5bm_Adlh_D1Jmc9pThNZGZS/exec" id="leadForm" method="post" target="submitFrame">
 <input id="payloadField" name="payload" type="hidden"/>
 <div class="form-grid">
-<div class="field"><label>お名前 *</label><input name="name" placeholder="例：佐世保 太郎" required=""/></div>
-<div class="field"><label>電話番号 *</label><input inputmode="tel" name="phone" placeholder="例：090-1234-5678" required=""/></div>
-<div class="field"><label>メール（任意）</label><input name="email" placeholder="例：sample@example.jp" type="email"/></div>
-<div class="field"><label>連絡方法</label><select name="contact"><option>電話</option><option>メール</option><option>どちらでも可</option></select></div>
-<div class="field full"><label>補足（任意）</label><textarea name="message" placeholder="墓地名・お寺・時期・気になっていること など"></textarea></div>
+<div class="field"><label for="lead-name">お名前 *</label><input id="lead-name" name="name" autocomplete="name" placeholder="例：佐世保 太郎" required=""/></div>
+<div class="field"><label for="lead-phone">電話番号 *</label><input id="lead-phone" name="phone" inputmode="tel" type="tel" autocomplete="tel" placeholder="例：090-1234-5678" required=""/></div>
+<div class="field"><label for="lead-email">メール（任意）</label><input id="lead-email" name="email" autocomplete="email" placeholder="例：sample@example.jp" type="email"/></div>
+<div class="field"><label for="lead-contact">連絡方法</label><select id="lead-contact" name="contact"><option>電話</option><option>メール</option><option>どちらでも可</option></select></div>
+<div class="field full"><label for="lead-message">補足（任意）</label><textarea id="lead-message" name="message" placeholder="墓地名・お寺・時期・気になっていること など"></textarea></div>
 </div>
 <label class="privacy"><input required="" type="checkbox"/><span><a href="privacy.html" target="_blank" rel="noopener" style="color:var(--green-2);font-weight:800;text-decoration:underline">個人情報の取扱い</a>に同意して、無料相談へ進みます。</span></label>
-<button class="btn-next" style="width:100%" type="submit">無料相談へ進む →</button>
-<div class="quiz-help">※ 送信内容は無料相談受付のために使用します。</div>
+<button class="btn-next" style="width:100%" type="submit">無料相談を申し込む（送信） →</button>
+<div class="quiz-help">※お名前と電話番号は無料相談のために必要です。メールでの連絡をご希望の場合はメールアドレスもご入力ください。送信内容は相談受付のために使用します。</div>
 </form>
 </div>
 </aside>
