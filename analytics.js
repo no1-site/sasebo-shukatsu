@@ -1,6 +1,6 @@
-/* 佐世保 終活相談窓口: Google Analytics 4 event tracking.
- * Configure the GA4 Measurement ID after creating this site's own GA4 web stream.
- * Never put customer names, phone numbers, emails, or survey answers in analytics events.
+/* 佐世保 終活相談窓口: GA4 funnel tracking.
+ * Measure quiz usage and lead submission attempts, not unverified conversions.
+ * Never send names, phone numbers, email addresses or quiz answers in analytics events.
  */
 (function () {
   "use strict";
@@ -77,6 +77,8 @@
         if (!quizCompleted && result.style.display === "block") {
           quizCompleted = true;
           track("quiz_complete", { quiz_id: "sasebo_hakajimai_7q" });
+          // The result displays the optional consultation form. This is NOT a lead.
+          track("lead_form_view", { form_id: "leadForm" });
         }
       });
     }
@@ -87,6 +89,14 @@
 
     let awaitingFrame = false;
     let responseCounted = false;
+    let formStarted = false;
+    leadForm.addEventListener("focusin", function (e) {
+      // Count the first real interaction, without collecting field values.
+      if (!formStarted && e.target.matches('input:not([type="hidden"]),select,textarea')) {
+        formStarted = true;
+        track("lead_form_start", { form_id: "leadForm" });
+      }
+    });
     leadForm.addEventListener("submit", function () {
       // Homepage's earlier submit listener has already serialized questionnaire
       // answers into the payloadField. Add GA4-only identifiers to that JSON.
@@ -116,7 +126,8 @@
         awaitingFrame = false;
         responseCounted = true;
         track("lead_form_response_loaded", { form_id: "leadForm" });
-        // Do not log generate_lead here without verified server-side success.
+        // Do not log generate_lead here; iframe load cannot verify Google Sheet save.
+        // Once Apps Script can acknowledge durable save, emit generate_lead ONLY then.
       });
     }
   });
