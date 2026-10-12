@@ -110,6 +110,10 @@
     .btn-back{background:#f6f2ea;color:#5e6b66;padding-inline:16px;display:none}
     .quiz-help{font-size:10px;color:#7a847f;margin-top:10px}
     .quiz-result{display:none}
+    .quiz-result h3,.q-title{scroll-margin-top:94px}
+    .q-title:focus{outline:none}
+    .q-choice:focus-visible,.btn-next:focus-visible,.btn-back:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+    .btn-next:disabled{opacity:.58;cursor:not-allowed;box-shadow:none}
     .quiz-result h3{font-size:22px;line-height:1.4;color:#1d342d;margin:8px 0 10px}
     .quiz-result p{font-size:14px;color:#596560}
     .result-box{background:#f8f6f0;border:1px solid #ece5d7;border-radius:18px;padding:14px 16px;margin:14px 0 16px}
@@ -186,6 +190,8 @@
 
     .sticky-cta{display:none;position:fixed;left:10px;right:10px;bottom:max(10px, env(safe-area-inset-bottom));z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);padding:10px;border-radius:18px;border:1px solid rgba(0,0,0,.08);box-shadow:0 14px 36px rgba(0,0,0,.18)}
     .sticky-cta a{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#ff8d35,var(--orange-d));color:#fff;padding:14px 18px;border-radius:999px;font-size:18px;font-weight:950}
+    .sticky-cta.is-hidden{display:none!important}
+    .hero-check-link{display:none}
 
     .about-section{background:#fff}
     .about-panel{background:#f8f7f2;border:1px solid var(--line);border-radius:24px;padding:24px;line-height:1.8}
@@ -214,6 +220,7 @@
       .topbar-inner{height:66px}
       .menu-btn{display:none}
       .head-cta{display:none}
+      .hero-check-link{display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(180deg,#ff8d35,var(--orange-d));color:#fff;padding:13px 18px;border-radius:999px;font-size:17px;font-weight:900;margin:0 0 15px;box-shadow:0 8px 20px rgba(249,115,22,.2);min-height:48px}
       .hero{padding-top:10px}
       .hero-wrap{min-height:0;border-radius:24px}
       .hero-overlay{background:linear-gradient(180deg,rgba(255,255,255,.83) 0%, rgba(255,255,255,.72) 32%, rgba(255,255,255,.85) 64%, rgba(255,255,255,.96) 100%)}
@@ -448,7 +455,7 @@ body{
 <div class="brand-sub">墓じまい・納骨・永代供養・生前整理の相談窓口</div>
 </div>
 <nav class="nav">
-<a href="#reasons">選ばれる理由</a>
+<a href="#reasons">この窓口でできること</a>
 <a href="#price">費用の目安</a>
 <a href="#flow">進め方</a>
 <a href="#faq">よくある質問</a>
@@ -470,6 +477,7 @@ body{
 <div class="eyebrow">佐世保市で墓じまいを検討中の方へ</div>
 <h1>墓じまいで<br/>お悩みの方へ</h1>
 <p class="lead">まだ何も決まっていなくても大丈夫。今のお墓の状況を60秒で整理し、次に確認することをわかりやすくご案内します。</p>
+<a class="hero-check-link" href="#check">匿名・無料の60秒チェックへ <span aria-hidden="true">→</span></a>
 <div class="price-card">
 <div class="label">墓石撤去・整地の参考目安</div>
 <div class="amount"><strong>30万円</strong><span>〜</span></div>
@@ -486,12 +494,12 @@ body{
 <div class="quiz-tag">60秒チェックは匿名OK・無料</div>
 <div class="quiz-title">まずは60秒でチェック</div>
 <div class="quiz-sub">あなたのお墓の状況を教えてください</div>
-<div class="quiz-progress"><div id="progressBar"></div></div>
+<div class="quiz-progress" role="progressbar" aria-label="質問の進み具合" aria-valuemin="0" aria-valuemax="7" aria-valuenow="1" id="quizProgress"><div id="progressBar"></div></div>
 <div class="quiz-count" id="progressText">1 / 7</div>
 <div id="quizPane">
 <div class="q-label" id="qLabel">Q1</div>
-<div class="q-title" id="questionTitle"></div>
-<div class="q-choices" id="choices"></div>
+<div class="q-title" id="questionTitle" tabindex="-1" aria-live="polite"></div>
+<div class="q-choices" id="choices" role="group" aria-labelledby="questionTitle"></div>
 <div class="quiz-actions">
 <button class="btn-back" id="backBtn" type="button">戻る</button>
 <button class="btn-next" id="nextBtn" type="button">次へ →</button>
@@ -500,9 +508,10 @@ body{
 </div>
 <div class="quiz-result" id="resultPane">
 <div class="quiz-tag">チェック完了</div>
-<h3>相談前に確認しておきたいポイントを整理しました</h3>
+<h3 tabindex="-1">相談前に確認しておきたいポイントを整理しました</h3>
 <p>ご回答内容から、見積り前に確認しておきたいポイントをまとめました。60秒チェックは匿名で利用できます。無料相談をご希望の場合は、お名前と連絡先をご入力ください。</p>
 <div class="result-box"><ul id="resultList"></ul></div>
+<p style="font-weight:800;color:#1f4b3f">ここまで匿名で利用できました。個別相談をご希望の場合だけ、下のフォームへお進みください。</p>
 <form action="https://script.google.com/macros/s/AKfycbxIMjBnkqvveqn0oUmY34nXpCWBjDm5eaX-6HEKdzjKQ5bm_Adlh_D1Jmc9pThNZGZS/exec" id="leadForm" method="post" target="submitFrame">
 <input id="payloadField" name="payload" type="hidden"/>
 <div class="form-grid">
@@ -743,6 +752,13 @@ body{
     const qTitle = document.getElementById('questionTitle');
     const qChoices = document.getElementById('choices');
     const progressBar = document.getElementById('progressBar');
+    const quizProgress = document.getElementById('quizProgress');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function keepQuizVisible(target) {
+      if (window.innerWidth > 820 || !target) return;
+      target.focus({preventScroll: true});
+      target.scrollIntoView({behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start'});
+    }
     const progressText = document.getElementById('progressText');
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('backBtn');
@@ -756,31 +772,37 @@ body{
       qTitle.textContent = q.title;
       progressText.textContent = `${current + 1} / ${questions.length}`;
       progressBar.style.width = `${((current + 1) / questions.length) * 100}%`;
+      quizProgress.setAttribute('aria-valuenow', String(current + 1));
       backBtn.style.display = current === 0 ? 'none' : 'inline-flex';
       nextBtn.textContent = current === questions.length - 1 ? '結果を見る →' : '次へ →';
       selectedValue = answers[q.key] || null;
+      nextBtn.disabled = !selectedValue;
       qChoices.innerHTML = '';
       q.choices.forEach(choice => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'q-choice' + (selectedValue === choice ? ' selected' : '');
         btn.textContent = choice;
+        btn.setAttribute('aria-pressed', String(selectedValue === choice));
         btn.addEventListener('click', () => {
           selectedValue = choice;
           answers[q.key] = choice;
-          [...qChoices.children].forEach(el => el.classList.remove('selected'));
+          [...qChoices.children].forEach(el => {el.classList.remove('selected');el.setAttribute('aria-pressed', 'false');});
           btn.classList.add('selected');
+          btn.setAttribute('aria-pressed', 'true');
+          nextBtn.disabled = false;
         });
         qChoices.appendChild(btn);
       });
     }
 
     function showResult() {
-      if (typeof gtag === 'function') gtag('event', 'check_complete');
+      // The shared analytics.js tracks quiz_complete once, after the result appears.
       quizPane.style.display = 'none';
       resultPane.style.display = 'block';
       progressText.textContent = `${questions.length} / ${questions.length}`;
       progressBar.style.width = '100%';
+      quizProgress.setAttribute('aria-valuenow', String(questions.length));
       const list = document.getElementById('resultList');
       const items = [];
       if (answers.area !== '佐世保市内') items.push('現在のお墓がある自治体の手続き確認が必要です。');
@@ -789,6 +811,7 @@ body{
       if (['まだ決まっていない', '相談したい'].includes(answers.next)) items.push('納骨先・永代供養など次の行き先も一緒に整理すると進めやすいです。');
       if (!items.length) items.push('大きな不明点は少なめです。現地確認後に具体的なお見積りへ進めます。');
       list.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+      keepQuizVisible(resultPane.querySelector('h3'));
     }
 
     nextBtn.addEventListener('click', () => {
@@ -798,10 +821,11 @@ body{
         return;
       }
       answers[q.key] = selectedValue;
-      if (current === 0 && typeof gtag === 'function') gtag('event', 'check_start');
+      // The shared analytics.js tracks the first answer as quiz_start.
       if (current < questions.length - 1) {
         current += 1;
         renderQuestion();
+        keepQuizVisible(qTitle);
       } else {
         showResult();
       }
@@ -811,6 +835,7 @@ body{
       if (current === 0) return;
       current -= 1;
       renderQuestion();
+      keepQuizVisible(qTitle);
     });
 
     // Keep contact preference and required contact details consistent.
@@ -847,7 +872,7 @@ body{
       document.getElementById('payloadField').value = JSON.stringify(payload);
 
       // A submit event means an attempt, not successful receipt by Apps Script.
-      if (typeof gtag === 'function') gtag('event', 'lead_submit_attempt');
+      // Submit attempt is tracked once by analytics.js; not a confirmed conversion.
       const btn = form.querySelector('button[type="submit"]');
       if (!btn) return;
       btn.disabled = true;
@@ -893,6 +918,18 @@ body{
     });
 
     renderQuestion();
+
+    // Keep the mobile fixed CTA from covering the questionnaire or form.
+    const stickyCta = document.querySelector('.sticky-cta');
+    if (stickyCta && 'IntersectionObserver' in window) {
+      const visibleTargets = new Map();
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => visibleTargets.set(entry.target, entry.isIntersecting));
+        stickyCta.classList.toggle('is-hidden', [...visibleTargets.values()].some(Boolean));
+      }, {threshold: 0.01});
+      [document.getElementById('check'), document.querySelector('.hero-check-link')]
+        .filter(Boolean).forEach(target => {visibleTargets.set(target, false);observer.observe(target);});
+    }
   </script>
 <iframe id="submitFrame" name="submitFrame" style="display:none"></iframe>
 </body>
